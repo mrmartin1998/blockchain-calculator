@@ -11,114 +11,119 @@ export default function Page() {
     const [displayValue, setDisplayValue] = useState('');
 
     useEffect(() => {
-        async function initializeWeb3AndContract() {
-            if (typeof window.ethereum !== 'undefined') {
-                const web3 = new Web3(window.ethereum);
-                setWeb3(web3);
-
-                const accounts = await web3.eth.getAccounts();
-                setAccounts(accounts);
-
-                const abi = [
-                  {
-                    "inputs": [],
-                    "name": "result",
-                    "outputs": [
-                      {
-                        "internalType": "uint256",
-                        "name": "",
-                        "type": "uint256"
-                      }
-                    ],
-                    "stateMutability": "view",
-                    "type": "function",
-                    "constant": true
-                  },
-                  {
-                    "inputs": [
-                      {
-                        "internalType": "uint256",
-                        "name": "a",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "b",
-                        "type": "uint256"
-                      }
-                    ],
-                    "name": "add",
-                    "outputs": [],
-                    "stateMutability": "nonpayable",
-                    "type": "function"
-                  },
-                  {
-                    "inputs": [
-                      {
-                        "internalType": "uint256",
-                        "name": "a",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "b",
-                        "type": "uint256"
-                      }
-                    ],
-                    "name": "subtract",
-                    "outputs": [],
-                    "stateMutability": "nonpayable",
-                    "type": "function"
-                  },
-                  {
-                    "inputs": [
-                      {
-                        "internalType": "uint256",
-                        "name": "a",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "b",
-                        "type": "uint256"
-                      }
-                    ],
-                    "name": "divide",
-                    "outputs": [],
-                    "stateMutability": "nonpayable",
-                    "type": "function"
-                  },
-                  {
-                    "inputs": [
-                      {
-                        "internalType": "uint256",
-                        "name": "a",
-                        "type": "uint256"
-                      },
-                      {
-                        "internalType": "uint256",
-                        "name": "b",
-                        "type": "uint256"
-                      }
-                    ],
-                    "name": "multiply",
-                    "outputs": [],
-                    "stateMutability": "nonpayable",
-                    "type": "function"
-                  }
-                ];
-                const contractAddress = '0x95d3f055b36635908caD1b37Dd6019F6833c5954';
-                const contractInstance = new web3.eth.Contract(abi, contractAddress);
-                setContractInstance(contractInstance);
-
-                console.log('Web3 and Contract Initialized');
-            } else {
-                console.error('MetaMask is not installed!');
-            }
-        }
-        
-        initializeWeb3AndContract();
-    }, []);
+      async function initializeWeb3AndContract() {
+          if (typeof window.ethereum !== 'undefined') {
+              try {
+                  await window.ethereum.enable(); // Prompt user to connect MetaMask wallet
+                  const web3 = new Web3(window.ethereum);
+                  setWeb3(web3);
+  
+                  const accounts = await web3.eth.getAccounts();
+                  setAccounts(accounts);
+  
+                  const abi =  [
+                    {
+                      "inputs": [],
+                      "name": "result",
+                      "outputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "",
+                          "type": "uint256"
+                        }
+                      ],
+                      "stateMutability": "view",
+                      "type": "function",
+                      "constant": true
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "a",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "b",
+                          "type": "uint256"
+                        }
+                      ],
+                      "name": "add",
+                      "outputs": [],
+                      "stateMutability": "nonpayable",
+                      "type": "function"
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "a",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "b",
+                          "type": "uint256"
+                        }
+                      ],
+                      "name": "subtract",
+                      "outputs": [],
+                      "stateMutability": "nonpayable",
+                      "type": "function"
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "a",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "b",
+                          "type": "uint256"
+                        }
+                      ],
+                      "name": "divide",
+                      "outputs": [],
+                      "stateMutability": "nonpayable",
+                      "type": "function"
+                    },
+                    {
+                      "inputs": [
+                        {
+                          "internalType": "uint256",
+                          "name": "a",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "b",
+                          "type": "uint256"
+                        }
+                      ],
+                      "name": "multiply",
+                      "outputs": [],
+                      "stateMutability": "nonpayable",
+                      "type": "function"
+                    }
+                  ];
+                  const contractAddress = '0x95d3f055b36635908caD1b37Dd6019F6833c5954';
+                  const contractInstance = new web3.eth.Contract(abi, contractAddress);
+                  setContractInstance(contractInstance);
+  
+                  console.log('Web3 and Contract Initialized');
+              } catch (error) {
+                  console.error('User denied account access or MetaMask is not installed:', error);
+              }
+          } else {
+              console.error('MetaMask is not installed!');
+          }
+      }
+      
+      initializeWeb3AndContract();
+  }, []);  
 
     function addToDisplay(number) {
         setDisplayValue(prevValue => prevValue + number);
